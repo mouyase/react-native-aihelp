@@ -1,4 +1,4 @@
-package com.aihelpexample;
+package com.aihelp.example;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

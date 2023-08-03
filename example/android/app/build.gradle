@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.aihelpexample"
+    namespace "com.aihelp.example"
     defaultConfig {
-        applicationId "com.aihelpexample"
+        applicationId "com.aihelp.example"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

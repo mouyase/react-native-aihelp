@@ -1,4 +1,4 @@
-package com.aihelpexample;
+package com.aihelp.example;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
