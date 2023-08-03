@@ -7,7 +7,19 @@ export default function App() {
             <Button
                 title='Open'
                 onPress={() => {
-                    AIHelp.show('THIS IS YOUR ENTRANCE ID')
+                    AIHelp.show({ entranceId: 'THIS IS YOUR ENTRANCE ID' })
+                }}
+            />
+            <Button
+                title='Change Launguage'
+                onPress={() => {
+                    AIHelp.updateSDKLanguage(AIHelp.Language.zh_CN)
+                }}
+            />
+            <Button
+                title='Update UserInfo'
+                onPress={() => {
+                    AIHelp.updateUserInfo({ userName: 'YOUR NAME' })
                 }}
             />
         </View>
@@ -19,6 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 16,
     },
     box: {
         width: 60,

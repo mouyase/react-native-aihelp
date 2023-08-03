@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
 import net.aihelp.config.ApiConfig;
+import net.aihelp.config.UserConfig;
 import net.aihelp.config.enums.PublishCountryOrRegion;
 import net.aihelp.init.AIHelpSupport;
 
@@ -18,7 +19,6 @@ import java.util.Map;
 @ReactModule(name = AIHelpModule.NAME)
 public class AIHelpModule extends ReactContextBaseJavaModule {
   public static final String NAME = "AIHelp";
-  private static final String E_INIT_ERROR = "E_INIT_ERROR";
 
   public AIHelpModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -49,16 +49,16 @@ public class AIHelpModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(String appKey, String domain, String appId, String language, Promise promise) {
-    if (language.equals("NONE")) {
+    if (language.equals("SYSTEM")) {
       AIHelpSupport.init(getReactApplicationContext(), appKey, domain, appId);
     } else {
       AIHelpSupport.init(getReactApplicationContext(), appKey, domain, appId, language);
     }
     AIHelpSupport.setOnAIHelpInitializedCallback((isSuccess, message) -> {
       if (isSuccess) {
-        promise.resolve(message);
+        promise.resolve(null);
       } else {
-        promise.reject(E_INIT_ERROR, message);
+        promise.reject(new Throwable(message));
       }
     });
   }
@@ -68,11 +68,40 @@ public class AIHelpModule extends ReactContextBaseJavaModule {
     if (welcomeMessage.equals("NONE")) {
       AIHelpSupport.show(entranceId);
     } else {
-      ApiConfig apiConfig = new ApiConfig.Builder()
-        .setEntranceId(entranceId)
-        .setWelcomeMessage(welcomeMessage)
-        .build();
+      ApiConfig apiConfig = new ApiConfig.Builder().setEntranceId(entranceId).setWelcomeMessage(welcomeMessage).build();
       AIHelpSupport.show(apiConfig);
     }
   }
+
+  @ReactMethod
+  public void updateSDKLanguage(String language) {
+    AIHelpSupport.updateSDKLanguage(language);
+  }
+
+  @ReactMethod
+  public void updateUserInfo(String userId, String userName, String serverId, String userTags, String customData) {
+    UserConfig.Builder builder = new UserConfig.Builder();
+    if (!userId.equals("NONE")) {
+      builder.setUserId(userId);
+    }
+    if (!userName.equals("NONE")) {
+      builder.setUserName(userName);
+    }
+    if (!serverId.equals("NONE")) {
+      builder.setServerId(serverId);
+    }
+    if (!userTags.equals("NONE")) {
+      builder.setUserTags(userTags);
+    }
+    if (!customData.equals("NONE")) {
+      builder.setCustomData(customData);
+    }
+    UserConfig userConfig = builder.build();
+    AIHelpSupport.updateUserInfo(userConfig);
+  }
+
+  public void resetUserInfo() {
+    AIHelpSupport.resetUserInfo();
+  }
 }
+
